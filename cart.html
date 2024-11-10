@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maseno E-Commerce</title>
+    
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Designing the header -->
+    <header>
+        <a href="#" class="logo"><img src="img/logo.svg" alt="logo"></a>
+        <ul class="navbar">
+            <li><a href="index.html" class="#">Home</a></li>
+            <li><a href="about.html" class="#">About Us</a></li>
+            <li><a href="product-listing.html" class="active">Shop</a></li>
+            <li><a href="#">Blog</a></li> 
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+        <div class="icons">
+            <a href="#"><i class="ri-search-line"></i></a>
+            <a href="#"><i class="ri-user-line"></i></a>
+            <a href="cart.html"><i class="ri-shopping-cart-line"></i>
+            <span class="cart-count">0</span>
+            </a>
+            <div class="bx bx-menu" id="menu-icon"></div>
+        </div>
+    </header> 
+
+    <section class="cart">
+        <h1>Shopping Cart</h1>
+        <div class="cart-item-container"></div>
+        <div class="cart-summary">
+            <h2>Total: <span class="cart-total">0</span></h2>
+            <div id="error-message" style="color: red; text-align: center; margin-top: 10px;"></div>
+            <button class=" btn checkout-btn">Proceed to Checkout</button>
+        </div>
+    </section>
+
+    <footer class="end-text">
+        <p>&copy; 2024 All Rights Reserved Maseno UCI</p>
+    </footer>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <!-- Custom js link -->
+    <script type="text/javascript" src="js/script.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const cartItemsContainer = document.querySelector(".cart-item-container");
+    const cartTotalElement = document.querySelector(".cart-total");
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const checkoutButton = document.querySelector(".checkout-btn");
+    const errorMessageContainer = document.getElementById("error-message");
+
+    // Function to calculate total price
+    function calculateTotal() {
+        const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+        cartTotalElement.textContent = `Ksh ${total.toFixed(2)}`;
+    }
+
+    // Function to render cart items
+    function renderCart() {
+        cartItemsContainer.innerHTML = ""; // Clear container first
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = "<p>Ooohps! The cart is empty. Go do some shopping.</p>";
+            return;
+        }
+
+        cart.forEach((item, index) => {
+            const cartItemDiv = document.createElement("div");
+            cartItemDiv.className = "cart-item";
+            cartItemDiv.innerHTML = `
+                <img src="${item.image}" alt="${item.title}">
+                <div>
+                    <h3>${item.title}</h3>
+                    <h4>${item.subtitle || ""}</h4>
+                    <p>Price: Ksh ${item.price}</p>
+                    <label>Quantity:</label>
+                    <input type="number" value="1" min="1">
+                    <button class=" btn remove-item" data-index="${index}">Remove</button>
+                    <button class="btn view-details" data-index="${index}">View Details</button>
+                </div>
+            `;
+
+            cartItemsContainer.appendChild(cartItemDiv);
+        });
+
+        calculateTotal();
+    }
+
+    function showErrorMessage() {
+        errorMessageContainer.textContent = "Your cart is empty. Please add some items before proceeding to checkout.";
+        errorMessageContainer.style.display = "block";
+        setTimeout(() => {
+            errorMessageContainer.style.display = "none";
+        }, 2000);
+    }
+
+    // Remove item from cart
+    cartItemsContainer.addEventListener("click", function (e) {
+        if (e.target.classList.contains("remove-item")) {
+            const index = parseInt(e.target.dataset.index, 10); // Get the product's index
+            cart.splice(index, 1); // Remove item from array
+            localStorage.setItem("cart", JSON.stringify(cart)); // Update localStorage
+            renderCart(); // Re-render cart
+            calculateTotal();
+        }
+
+        // View details of a product
+        if (e.target.classList.contains("view-details")) {
+            const index = parseInt(e.target.dataset.index, 10); // Get the product's index
+            const selectedProduct = cart[index]; // Find product using the index
+
+            if (selectedProduct) {
+                localStorage.setItem("selectedProduct", JSON.stringify(selectedProduct)); // Store product details
+                window.location.href = "product-detail.html"; // Redirect to product details page
+            } else {
+                console.error("Product not found in the cart!");
+            }
+        }
+    });
+
+    checkoutButton.addEventListener("click", function () {
+        if (cart.length === 0) {
+            showErrorMessage();
+        } else {
+            window.location.href = "checkout.html";
+        }
+    });
+
+    // Initial render
+    renderCart();
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <a href="index.html" class="logo"><img src="img/logo.svg" alt="logo"></a>
+        <ul class="navbar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="product-listing.html" class="active">Shop</a></li>
+            <li><a href="#">Blog</a></li> 
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </header>
+
+    <!-- Product Detail Section -->
+    <section class="product-detail">
+        <h1 id="product-title">Product Title</h1>
+        <img id="product-image" src="" alt="Product Image">
+        <p id="product-description">Product Description</p>
+        <p>Price: <span id="product-price"></span></p>
+        <button class="btn" id="back-to-cart">Back to Cart</button>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Element references
+            const productTitle = document.getElementById("product-title");
+            const productImage = document.getElementById("product-image");
+            const productDescription = document.getElementById("product-description");
+            const productPrice = document.getElementById("product-price");
+            const backToCartButton = document.getElementById("back-to-cart");
+
+            // Retrieve the selected product from localStorage
+            const selectedProduct = JSON.parse(localStorage.getItem("selectedProduct"));
+
+            if (selectedProduct) {
+                // Populate product details
+                productTitle.textContent = selectedProduct.title;
+                productImage.src = selectedProduct.image;
+                productDescription.textContent = selectedProduct.description || "No description available.";
+                productPrice.textContent = `Ksh ${selectedProduct.price}`;
+            } else {
+                // Handle missing product details
+                document.body.innerHTML = "<p>No product details available. Please return to the cart.</p>";
+            }
+
+            // Back to Cart Button functionality
+            backToCartButton.addEventListener("click", function () {
+                window.location.href = "cart.html";
+            });
+        });
+    </script>
+</body>
+</html>
