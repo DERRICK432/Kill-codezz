@@ -601,6 +601,12 @@ a[href="cart.html"]{
         color: var(--other-color);
         font-size: 32px;
     }
+    .middle-text h2 {
+        dispay: none;
+    font-size: var(--h2-font);
+    color: var(--text-color);
+    font-weight: 600;
+    }
     .navbar{
         position: absolute;
         top: 100%;
