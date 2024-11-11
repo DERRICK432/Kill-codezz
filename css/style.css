@@ -602,7 +602,7 @@ a[href="cart.html"]{
         font-size: 32px;
     }
     .middle-text h2 {
-    dispay: none;
+    display: none;
     font-size: var(--h2-font);
     color: var(--text-color);
     font-weight: 600;
@@ -649,7 +649,7 @@ a[href="cart.html"]{
     }
     
     .middle-text h2 {
-    dispay: none;
+    display: none;
     font-size: var(--h2-font);
     color: var(--text-color);
     font-weight: 600;
